@@ -84,11 +84,11 @@ class BinaryTree():
         if root.data == person:
             self.delete(person)
             self.append(Person(changes))
-            return Person(person)
+            return Person(changes)
 
         person, parent, exist = self.__find(self.root, None, person['age'], person['name'])
 
         if exist:
             self.delete(person.data)
             self.append(Person(changes))
-            return Person(person)
+            return Person(changes)
