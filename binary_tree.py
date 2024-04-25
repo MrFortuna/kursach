@@ -92,27 +92,3 @@ class BinaryTree():
             self.delete(person.data)
             self.append(Person(changes))
             return Person(person)
-
-
-
-
-
-
-list = [{'name': 'Егор', 'age': 95}, {'name': 'Дима', 'age': 40}, {'name': 'Маша', 'age': 20}, {'name': 'Боря', 'age': 5}, {'name': 'Гена', 'age': 3}, {'name': 'Антон', 'age': 3}]
-
-tree = BinaryTree()
-
-a = {'name': 'Боря', 'age': 5}
-b = {"name":"Леша", "age":10}
-c
-
-for i in list:
-    tree.append(Person(i))
-
-
-
-tree.show(tree.root)
-print('---------')
-tree.change(tree.root, a, b)
-print('---------')
-tree.show(tree.root)
