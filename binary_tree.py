@@ -44,7 +44,7 @@ class BinaryTree():
         parent, x, exist = self.__find(self.root, None, person.data['age'], person.data['name'], person.data['gender'], person.data['date_birth'])
 
         if not exist and parent:
-            if person.data['age'] < parent.data['age']:
+            if person.data['age'] <= parent.data['age']:
                 parent.left = person
             else:
                 parent.right = person
@@ -99,14 +99,15 @@ class BinaryTree():
     #Изменение данных обьекта
     #Производится поиск обьекта по ключам, далее удаление обьекта и добавление уже измененных данных
     def change(self, root: object, person: dict, changes: dict) -> Person:
+        print(root.data)
         if root.data == person:
             self.delete(person)
             self.append(Person(changes))
             return Person(changes)
 
         person, parent, exist = self.__find(self.root, None, person['age'], person['name'], person['gender'], person['date_birth'])
-
         if exist:
+            print(person.data)
             self.delete(person.data)
             self.append(Person(changes))
             return Person(changes)

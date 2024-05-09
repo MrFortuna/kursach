@@ -17,9 +17,17 @@ def read_tree(tree, main, tree_view, explan):
     file = open("Relatives.txt", "w+")
     people = []
     people = tree.show(tree.root, people)
-    main.geometry('500x500')
-    explan.config(text="СПИСОК РОДСТВЕННИКОВ:")
-    tree_view.config(listvariable=Variable(value=people), width=70)
+    if people is None:
+        tree_view.delete(0, END)
+    else:
+        main.geometry('800x800')
+        explan.config(text="СПИСОК РОДСТВЕННИКОВ:")
+        for i in range(len(people)):
+            m = ''
+            for j in people[i]:
+                m += str(j) + ' '
+                people[i] = m
+        tree_view.config(width=70, font="arial", yscrollcommand=1, listvariable=Variable(value=people))
 
     file.close()
 
@@ -34,9 +42,9 @@ def read_from_file(tree):
     data[-1] = data[-1].split(",")
     tree_app(tree, data[-1][0], data[-1][1], data[-1][2])
 
-#Удаление элемента дерева по введенным данным
+#Удаление элемента "дерева" по введенным данным
 def delete_person(tree, name, birth_date, gender, ent1, ent2, ent3):
-    tree.delete({"name":name, "date_birth":birth_date, "gender":gender})
+    tree.delete(Person({"name":name, "date_birth":birth_date, "gender":gender}).data)
     clear_entry(ent1, ent2, ent3)
 
 #Справка, аналог readme
