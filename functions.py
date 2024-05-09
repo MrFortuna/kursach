@@ -1,45 +1,69 @@
 import tkinter as tk
-from tkinter import END
+from tkinter import END, Variable
 from binary_tree import Person, BinaryTree
+import os
 
-
-def tree_app(tree, full_name, birth_date, gender):
-    person = {"name":full_name.get(), "date_birth":birth_date.get(), "gender":gender.get()}
+#Добавление элемента в "дерево"
+def tree_app(tree: BinaryTree, full_name, birth_date, gender, ent1=None, ent2=None, ent3=None):
+    person = {"name":full_name, "date_birth":birth_date, "gender":gender}
     tree.append(Person(person))
-    clear_entry(full_name, birth_date, gender)
+    if ent1 is None:
+        return
+    else:
+        clear_entry(ent1, ent2, ent3)
 
-def read_tree(tree):
-    file = open("Relatives.txt", "w")
-    tree.show(tree.root)
+#Перенос данных "дерева" из структуры на форму и в файл
+def read_tree(tree, main, tree_view, explan):
+    file = open("Relatives.txt", "w+")
+    people = []
+    people = tree.show(tree.root, people)
+    main.geometry('500x500')
+    explan.config(text="СПИСОК РОДСТВЕННИКОВ:")
+    tree_view.config(listvariable=Variable(value=people), width=70)
+
     file.close()
 
+#Чтение данных из файла с последующим вызовом функции записи в "дерево"
+def read_from_file(tree):
+    input_data = open("Input_Data.txt", "r", encoding='utf-8')
+    data = input_data.readlines()
+    for i in range(len(data) - 1):
+        data[i] = data[i][:-1]
+        data[i] = data[i].split(",")
+        tree_app(tree, data[i][0], data[i][1], data[i][2])
+    data[-1] = data[-1].split(",")
+    tree_app(tree, data[-1][0], data[-1][1], data[-1][2])
+
+#Удаление элемента дерева по введенным данным
 def delete_person(tree, name, birth_date, gender, ent1, ent2, ent3):
     tree.delete({"name":name, "date_birth":birth_date, "gender":gender})
     clear_entry(ent1, ent2, ent3)
 
+#Справка, аналог readme
 def info():
     _win_inf = tk.Tk()
     _win_inf.title("Справка")
-    _win_inf.geometry("750x100")
+    _win_inf.geometry("850x150")
 
     tk.Label(_win_inf, text="1. Данная курсовая работа представляет из себя программу, храняющую информацию по родственникам в виде бинарного дерева.\n \
              2. Так как дерево бинарное, следовательно, у каждого родителя не может быть более двух потомков.\n \
              3. В дате допускаются только значащие нули.\n\
              4. ФИО вводится через пробел - язык не имеет значения.\n\
-             5. Не допускается наличие внутри одного дерева людей с одинаковыми данными.").pack()
+             5. Не допускается наличие внутри одного дерева людей с одинаковыми данными.\n\
+             6. Формат записи в файле при чтении из файла:\n\
+             Фамилия Имя Отчество,Дата Рождения,Пол\n\
+             Каждого нового родственника следует писать с новой строки.").pack()
 
-def show_tree(tree):
-    tree_list = tk.Tk()
-    tree_list.geometry("700x200")
-    tree_list.title("Генеалогическое дерево")
-
-
+#Очистка полей ввода после некоторых действий
 def clear_entry(ent1, ent2, ent3):
     ent1.delete(0, END)
     ent2.delete(0, END)
     ent3.delete(0, END)
 
+#Первоначально: поиск по введенным данным по "дереву" с дальнейшим открытием вспомогательного окна
+#для ввода данных, которые заменят собой изначальные данные
 def change_person(full_name, birth_date, gender, tree):
+    #Непосредственно изменение данных обьекта внутри структуры с последующим закрытием вспомогательного окна
     def changed(person):
         if len(full_name2.get()) == 0:
             new_name = full_name
