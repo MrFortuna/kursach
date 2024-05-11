@@ -1,7 +1,6 @@
 import tkinter as tk
-from tkinter import END, Variable
+from tkinter import END, Variable, NORMAL, messagebox
 from binary_tree import Person, BinaryTree
-import os
 
 #Добавление элемента в "дерево"
 def tree_app(tree: BinaryTree, full_name, birth_date, gender, ent1=None, ent2=None, ent3=None):
@@ -14,7 +13,7 @@ def tree_app(tree: BinaryTree, full_name, birth_date, gender, ent1=None, ent2=No
 
 #Перенос данных "дерева" из структуры на форму и в файл
 def read_tree(tree, main, tree_view, explan):
-    file = open("Relatives.txt", "w+")
+    file = open("Relatives_list.txt", "a+")
     people = []
     people = tree.show(tree.root, people)
     if people is None:
@@ -32,8 +31,13 @@ def read_tree(tree, main, tree_view, explan):
     file.close()
 
 #Чтение данных из файла с последующим вызовом функции записи в "дерево"
-def read_from_file(tree):
-    input_data = open("Input_Data.txt", "r", encoding='utf-8')
+def read_from_file(tree, file_name=None):
+    if file_name is None:
+        messagebox.showerror("Опаньки!", "Похоже, вы не ввели название файла")
+    try:
+        input_data = open(f"{file_name}", "rt", encoding='utf-8')
+    except FileNotFoundError:
+        messagebox.showerror("Опаньки!", "Похоже, такого файла не существует(")
     data = input_data.readlines()
     for i in range(len(data) - 1):
         data[i] = data[i][:-1]
@@ -41,6 +45,8 @@ def read_from_file(tree):
         tree_app(tree, data[i][0], data[i][1], data[i][2])
     data[-1] = data[-1].split(",")
     tree_app(tree, data[-1][0], data[-1][1], data[-1][2])
+
+    input_data.close()
 
 #Удаление элемента "дерева" по введенным данным
 def delete_person(tree, name, birth_date, gender, ent1, ent2, ent3):

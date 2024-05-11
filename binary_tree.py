@@ -99,7 +99,6 @@ class BinaryTree():
     #Изменение данных обьекта
     #Производится поиск обьекта по ключам, далее удаление обьекта и добавление уже измененных данных
     def change(self, root: object, person: dict, changes: dict) -> Person:
-        print(root.data)
         if root.data == person:
             self.delete(person)
             self.append(Person(changes))

@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import Scrollbar, LEFT, Y
-from binary_tree import Person, BinaryTree, tree
+from tkinter import Scrollbar, DISABLED
+from binary_tree import tree
 from functions import *
 
 
 #Основное окно
 main = tk.Tk()
-main.geometry("500x350")
+main.geometry("500x400")
 main.title("Гобечия В. Б., Курсовая работа, 1 курс, Вариант 60")
 main.config(bg="orange")
 
@@ -49,8 +49,14 @@ delete_person_btn.pack()
 change_person_btn = tk.Button(btns, text="Изменить данные...", font=('system', 14), command=lambda: change_person(full_name.get(), birth_date.get(), gender.get(), tree), width=26)
 change_person_btn.pack()
 
-read_from_file_btn = tk.Button(btns, text='Прочитать дерево из файла', font=('system', 14), command=lambda: read_from_file(tree), width=26)
+read_from_file_btn = tk.Button(btns, text='Прочитать дерево из файла', font=('system', 14), command=lambda: read_from_file(tree, file_name=input_file.get()), width=26)
 read_from_file_btn.pack()
+
+label_file = tk.Label(btns, font=('system', 14), bg="orange", text="Введите название файла:")
+label_file.pack()
+
+input_file = tk.Entry(btns)
+input_file.pack()
 
 info_btn = tk.Button(btns, text="*справка", font=('system', 14), command=info, width=26)
 info_btn.pack(pady=20)
